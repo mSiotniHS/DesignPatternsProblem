@@ -15,7 +15,7 @@ public class MatrixTextDrawer : IMatrixDrawer
     public MatrixTextDrawer(ITextAdapter adapter)
     {
         _adapter = adapter;
-        _state = new char[64, 64];  // TODO this is so bad, how do i do this better?
+        _state = new char[64, 64];
         _columnWidths = null;
 
         for (var i = 0; i < _state.GetLength(0); i++)

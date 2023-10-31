@@ -8,23 +8,13 @@ public class MatrixTextDrawer : IMatrixDrawer
     private const uint AfterDotMaxLength = 3;
 
     private readonly ITextAdapter _adapter;
-    private readonly char[,] _state;
 
     private uint[]? _columnWidths;
 
     public MatrixTextDrawer(ITextAdapter adapter)
     {
         _adapter = adapter;
-        _state = new char[64, 64];
         _columnWidths = null;
-
-        for (var i = 0; i < _state.GetLength(0); i++)
-        {
-            for (var j = 0; j < _state.GetLength(1); j++)
-            {
-                _state[i, j] = ' ';
-            }
-        }
     }
 
     public void DrawBraces(IReadOnlyMatrix matrix)
@@ -39,15 +29,16 @@ public class MatrixTextDrawer : IMatrixDrawer
 
         for (var row = 0u; row < braceHeight; row++)
         {
-            (_state[row, 0], _state[row, rightBraceX]) = row switch
+            var (leftBraceSymbol, rightBraceSymbol) = row switch
             {
                 0u => ('┌', '┐'),
                 _ when row + 1 == braceHeight => ('└', '┘'),
                 _ => ('|', '|')
             };
-        }
 
-        Update();
+            _adapter.Write(leftBraceSymbol, new PointerPosition((int) row, 0));
+            _adapter.Write(rightBraceSymbol, new PointerPosition((int) row, (int) rightBraceX));
+        }
     }
 
     public void DrawElement(uint row, uint column, IReadOnlyMatrix matrix)
@@ -62,26 +53,7 @@ public class MatrixTextDrawer : IMatrixDrawer
 
         var formattedString = FormatNumber(matrix.Get(row, column), AfterDotMaxLength).PadLeft((int) _columnWidths[column]);
 
-        for (var i = 0; i < _columnWidths[column]; i++)
-        {
-            _state[y, startingX + i] = formattedString[i];
-        }
-
-        Update();
-    }
-
-    private void Update()
-    {
-        _adapter.Clear();
-
-        for (var i = 0; i < _state.GetLength(0); i++)
-        {
-            for (var j = 0; j < _state.GetLength(1); j++)
-            {
-                _adapter.Write(_state[i, j]);
-            }
-            _adapter.Write('\n');
-        }
+        _adapter.Write(formattedString, new PointerPosition((int) y, (int) startingX));
     }
 
     private static uint[] CalculateColumnWidths(IReadOnlyMatrix matrix)

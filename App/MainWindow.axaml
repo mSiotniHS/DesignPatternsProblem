@@ -23,10 +23,22 @@
                 Генерация разреженной матрицы
             </Button>
         </StackPanel>
-        <Canvas Name="Canvas"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Yellow"
-                UseLayoutRounding="False"/>
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+            <Canvas Name="Canvas"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    UseLayoutRounding="False"
+                    Width="400"
+                    Height="400"
+                    />
+            <TextBox Name="TextBox"
+                     FontFamily="Iosevka"
+                     Width="400"
+                     Height="400"
+                     />
+        </StackPanel>
     </StackPanel>
 </Window>

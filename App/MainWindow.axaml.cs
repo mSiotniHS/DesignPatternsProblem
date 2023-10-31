@@ -15,6 +15,7 @@ public partial class MainWindow : Window
     private IDrawableMatrix? _matrix;
     private readonly Canvas _canvas;
     private readonly TextBox _textBox;
+    private bool _showBorder;
 
     public MainWindow()
     {
@@ -23,6 +24,8 @@ public partial class MainWindow : Window
         _matrix = null;
         _canvas = this.FindControl<Canvas>("Canvas")!;
         _textBox = this.FindControl<TextBox>("TextBox")!;
+
+        _showBorder = true;
     }
 
     private void MatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
@@ -51,12 +54,17 @@ public partial class MainWindow : Window
             new OriginOffsetDecorator(
                 new AvaloniaCanvasAdapter(_canvas),
                 new Point(15, 15)));
-        _matrix?.Draw(drawer);
+        _matrix?.Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
     }
 
     private void UpdateText()
     {
         IMatrixDrawer drawer = new MatrixTextDrawer(new AvaloniaTextBoxAdapter(_textBox));
-        _matrix?.Draw(drawer);
+        _matrix?.Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
+    }
+
+    private void ShowBorderCheckbox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        _showBorder = !_showBorder;
     }
 }

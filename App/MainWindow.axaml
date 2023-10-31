@@ -22,6 +22,11 @@
                     HorizontalAlignment="Stretch">
                 Генерация разреженной матрицы
             </Button>
+            <CheckBox Name="ShowBorderCheckbox"
+                      IsChecked="True"
+                      IsCheckedChanged="ShowBorderCheckbox_OnIsCheckedChanged">
+                Показывать рамку
+            </CheckBox>
         </StackPanel>
         <StackPanel
             Orientation="Horizontal"

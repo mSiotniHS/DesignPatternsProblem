@@ -21,7 +21,7 @@ public class AvaloniaCanvasAdapter : ICanvasAdapter
 		{
 			StartPoint = new Avalonia.Point(start.X, start.Y),
 			EndPoint = new Avalonia.Point(end.X, end.Y),
-			Stroke = new SolidColorBrush(Colors.White)
+			Stroke = new SolidColorBrush(Colors.Black)
 		});
 	}
 

@@ -6,7 +6,7 @@ using Lib.Drawing;
 using Lib.Drawing.Canvas;
 using Lib.Drawing.Text;
 using Lib.Helpers;
-using Point = Lib.Drawing.Canvas.Point;
+using Point = Lib.Drawing.Common.Point;
 
 namespace App;
 

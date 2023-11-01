@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Avalonia.Controls;
+using Lib.Drawing.Common;
 using Lib.Drawing.Text;
 
 namespace App.Helpers;

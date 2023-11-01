@@ -1,4 +1,6 @@
-﻿namespace Lib.Drawing.Canvas;
+﻿using Lib.Drawing.Common;
+
+namespace Lib.Drawing.Canvas;
 
 public class OriginOffsetDecorator : ICanvas
 {

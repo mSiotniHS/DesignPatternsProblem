@@ -1,3 +1,5 @@
+using Lib.Drawing.Common;
+
 namespace Lib.Drawing.Text;
 
 public class ConsoleTextarea : ITextarea

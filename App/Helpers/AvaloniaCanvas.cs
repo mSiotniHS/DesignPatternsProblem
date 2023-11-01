@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Lib.Drawing.Canvas;
+using Lib.Drawing.Common;
 
 namespace App.Helpers;
 

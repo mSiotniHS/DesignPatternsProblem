@@ -1,6 +1,6 @@
-namespace Lib.Drawing.Text;
+using Lib.Drawing.Common;
 
-public record struct PointerPosition(int Line, int Column);
+namespace Lib.Drawing.Text;
 
 public interface ITextarea
 {

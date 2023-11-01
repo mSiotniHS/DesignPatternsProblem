@@ -1,7 +1,6 @@
-namespace Lib.Drawing.Canvas;
+using Lib.Drawing.Common;
 
-public record struct Point(double X, double Y);
-public record struct Size(double Width, double Height);
+namespace Lib.Drawing.Canvas;
 
 public interface ICanvas
 {

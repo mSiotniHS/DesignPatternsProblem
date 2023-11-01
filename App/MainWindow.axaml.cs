@@ -52,14 +52,14 @@ public partial class MainWindow : Window
 
         IMatrixDrawer drawer = new MatrixCanvasDrawer(
             new OriginOffsetDecorator(
-                new AvaloniaCanvasAdapter(_canvas),
+                new AvaloniaCanvas(_canvas),
                 new Point(15, 15)));
         _matrix?.Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
     }
 
     private void UpdateText()
     {
-        IMatrixDrawer drawer = new MatrixTextDrawer(new AvaloniaTextBoxAdapter(_textBox));
+        IMatrixDrawer drawer = new MatrixTextDrawer(new AvaloniaTextBoxTextarea(_textBox));
         _matrix?.Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
     }
 

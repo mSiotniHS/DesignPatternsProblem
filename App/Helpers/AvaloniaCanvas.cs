@@ -6,11 +6,11 @@ using Lib.Drawing.Canvas;
 
 namespace App.Helpers;
 
-public class AvaloniaCanvasAdapter : ICanvasAdapter
+public class AvaloniaCanvas : ICanvas
 {
 	private readonly Canvas _canvas;
 
-	public AvaloniaCanvasAdapter(Canvas canvas)
+	public AvaloniaCanvas(Canvas canvas)
 	{
 		_canvas = canvas;
 	}

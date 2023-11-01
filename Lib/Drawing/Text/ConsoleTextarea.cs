@@ -1,6 +1,6 @@
 namespace Lib.Drawing.Text;
 
-public class ConsoleAdapter : ITextAdapter
+public class ConsoleTextarea : ITextarea
 {
     public void Write(string value, PointerPosition startingPosition)
     {

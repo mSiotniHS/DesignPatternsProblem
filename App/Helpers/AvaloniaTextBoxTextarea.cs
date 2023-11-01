@@ -5,12 +5,12 @@ using Lib.Drawing.Text;
 
 namespace App.Helpers;
 
-public class AvaloniaTextBoxAdapter : ITextAdapter
+public class AvaloniaTextBoxTextarea : ITextarea
 {
 	private readonly TextBox _textBox;
 	private readonly List<List<char>> _state;
 
-	public AvaloniaTextBoxAdapter(TextBox textBox)
+	public AvaloniaTextBoxTextarea(TextBox textBox)
 	{
 		_textBox = textBox;
 		_state = new List<List<char>>();

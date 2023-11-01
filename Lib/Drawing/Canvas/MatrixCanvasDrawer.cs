@@ -9,14 +9,14 @@ public class MatrixCanvasDrawer : IMatrixDrawer
     private const double AfterDotMaxLength = 3;
     private const double BorderGap = 10;
 
-    private readonly ICanvasAdapter _adapter;
+    private readonly ICanvas _canvas;
 
     private double[]? _columnWidths;
     private double? _rowHeight;
 
-    public MatrixCanvasDrawer(ICanvasAdapter adapter)
+    public MatrixCanvasDrawer(ICanvas canvas)
     {
-        _adapter = adapter;
+        _canvas = canvas;
         _columnWidths = null;
         _rowHeight = null;
     }
@@ -31,18 +31,18 @@ public class MatrixCanvasDrawer : IMatrixDrawer
             + _rowHeight.Value * matrix.RowCount  // высоты элементов
             + ElementGap * (matrix.RowCount - 1); // расстояния между элементами
 
-        _adapter.DrawLine(new Point(0, 0), new Point(ElementGap, 0));
-        _adapter.DrawLine(new Point(0, 0), new Point(0, braceHeight));
-        _adapter.DrawLine(new Point(0, braceHeight), new Point(ElementGap, braceHeight));
+        _canvas.DrawLine(new Point(0, 0), new Point(ElementGap, 0));
+        _canvas.DrawLine(new Point(0, 0), new Point(0, braceHeight));
+        _canvas.DrawLine(new Point(0, braceHeight), new Point(ElementGap, braceHeight));
 
         var rightBraceX =
             _columnWidths.Aggregate(0.0, (sum, next) => sum + next)  // ширины столбцов
             + (matrix.ColumnCount - 1) * ElementGap  // расстояние между элементами
             + 2 * BorderGap;  // отступы от границ
 
-        _adapter.DrawLine(new Point(rightBraceX - ElementGap, 0), new Point(rightBraceX, 0));
-        _adapter.DrawLine(new Point(rightBraceX, 0), new Point(rightBraceX, braceHeight));
-        _adapter.DrawLine(new Point(rightBraceX - ElementGap, braceHeight), new Point(rightBraceX, braceHeight));
+        _canvas.DrawLine(new Point(rightBraceX - ElementGap, 0), new Point(rightBraceX, 0));
+        _canvas.DrawLine(new Point(rightBraceX, 0), new Point(rightBraceX, braceHeight));
+        _canvas.DrawLine(new Point(rightBraceX - ElementGap, braceHeight), new Point(rightBraceX, braceHeight));
     }
 
     public void DrawElement(uint row, uint column, IReadOnlyMatrix matrix)
@@ -62,7 +62,7 @@ public class MatrixCanvasDrawer : IMatrixDrawer
             + BorderGap
             + row * ElementGap;
 
-        _adapter.DrawText(
+        _canvas.DrawText(
             FormatNumber(matrix.Get(row, column)),
             FontSize,
             new Point(startingX, startingY));
@@ -95,8 +95,8 @@ public class MatrixCanvasDrawer : IMatrixDrawer
         Math.Round(number, (int) AfterDotMaxLength).ToString(CultureInfo.InvariantCulture);
 
     private double GetLength(double number) =>
-        _adapter.MeasureTextSize(FormatNumber(number), FontSize).Width;
+        _canvas.MeasureTextSize(FormatNumber(number), FontSize).Width;
 
     private double CalculateRowHeight(IReadOnlyMatrix matrix) =>
-        _adapter.MeasureTextSize(FormatNumber(matrix.Get(0, 0)), FontSize).Height;
+        _canvas.MeasureTextSize(FormatNumber(matrix.Get(0, 0)), FontSize).Height;
 }

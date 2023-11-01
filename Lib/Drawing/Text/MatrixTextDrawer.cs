@@ -7,13 +7,13 @@ public class MatrixTextDrawer : IMatrixDrawer
     private const uint ElementGap = 1;
     private const uint AfterDotMaxLength = 3;
 
-    private readonly ITextAdapter _adapter;
+    private readonly ITextarea _textarea;
 
     private uint[]? _columnWidths;
 
-    public MatrixTextDrawer(ITextAdapter adapter)
+    public MatrixTextDrawer(ITextarea textarea)
     {
-        _adapter = adapter;
+        _textarea = textarea;
         _columnWidths = null;
     }
 
@@ -36,8 +36,8 @@ public class MatrixTextDrawer : IMatrixDrawer
                 _ => ('|', '|')
             };
 
-            _adapter.Write(leftBraceSymbol, new PointerPosition((int) row, 0));
-            _adapter.Write(rightBraceSymbol, new PointerPosition((int) row, (int) rightBraceX));
+            _textarea.Write(leftBraceSymbol, new PointerPosition((int) row, 0));
+            _textarea.Write(rightBraceSymbol, new PointerPosition((int) row, (int) rightBraceX));
         }
     }
 
@@ -53,7 +53,7 @@ public class MatrixTextDrawer : IMatrixDrawer
 
         var formattedString = FormatNumber(matrix.Get(row, column), AfterDotMaxLength).PadLeft((int) _columnWidths[column]);
 
-        _adapter.Write(formattedString, new PointerPosition((int) y, (int) startingX));
+        _textarea.Write(formattedString, new PointerPosition((int) y, (int) startingX));
     }
 
     private static uint[] CalculateColumnWidths(IReadOnlyMatrix matrix)

@@ -2,9 +2,13 @@ using Lib.Drawing;
 
 namespace Lib;
 
-public abstract class AMatrix : IDrawableMatrix
+public abstract class AMatrix : IMatrix
 {
     private readonly IVector[] _rows;
+
+    public uint RowCount => (uint)_rows.Length;
+    public uint ColumnCount => _rows[0].Dimension;
+
 
     protected AMatrix(uint rowCount, uint columnCount)
     {

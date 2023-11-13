@@ -28,8 +28,5 @@ public abstract class AMatrix : IMatrix
     public void Set(uint row, uint column, double value) =>
         _rows[row].Set(column, value);
 
-    public uint RowCount => (uint) _rows.Length;
-    public uint ColumnCount => _rows[0].Dimension;
-
-    public abstract void Draw(IMatrixDrawer drawer);
+    public abstract IIteratorFactory<IMatrix, double> IteratorFactory { get; }
 }

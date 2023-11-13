@@ -9,19 +9,29 @@ public class SparseMatrix : AMatrix
     }
 
     protected override IVector InitializeVector(uint size) => new SparseVector(size);
+}
 
-    public override void Draw(IMatrixDrawer drawer)
+public class SparseMatrixDrawingStrategy : IDrawingStrategy<IMatrixDrawer>
+{
+    private readonly IReadOnlyMatrix _matrix;
+
+    public SparseMatrixDrawingStrategy(IReadOnlyMatrix matrix)
     {
-        drawer.DrawBraces(this);
+        _matrix = matrix;
+    }
 
-        for (var i = 0u; i < RowCount; i++)
+    public void Draw(IMatrixDrawer drawer)
+    {
+        drawer.DrawBraces(_matrix);
+
+        for (var i = 0u; i < _matrix.RowCount; i++)
         {
-            for (var j = 0u; j < ColumnCount; j++)
+            for (var j = 0u; j < _matrix.ColumnCount; j++)
             {
-                var value = Get(i, j);
+                var value = _matrix.Get(i, j);
                 if (value != 0)
                 {
-                    drawer.DrawElement(i, j, this);
+                    drawer.DrawElement(i, j, _matrix);
                 }
             }
         }

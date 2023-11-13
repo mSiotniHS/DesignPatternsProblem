@@ -1,25 +1,33 @@
-using Lib.Drawing;
-
 namespace Lib;
 
 public class Matrix : AMatrix
 {
+    public override IIteratorFactory<IMatrix, double> IteratorFactory => new MatrixIteratorFactory<Iterator>();
+
     public Matrix(uint rowCount, uint columnCount) : base(rowCount, columnCount)
     {
     }
 
     protected override IVector InitializeVector(uint size) => new Vector(size);
 
-    public override void Draw(IMatrixDrawer drawer)
+    private class Iterator : IIterator<IMatrix, double>
     {
-        drawer.DrawBraces(this);
+        public IMatrix Collection { get; init; }
+        private (int, int)? _currentElement;
 
-        for (var i = 0u; i < RowCount; i++)
+        public Iterator()
         {
-            for (var j = 0u; j < ColumnCount; j++)
-            {
-                drawer.DrawElement(i, j, this);
-            }
+            _currentElement = null;
+        }
+
+        public double GetNext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasNext()
+        {
+            throw new NotImplementedException();
         }
     }
 }

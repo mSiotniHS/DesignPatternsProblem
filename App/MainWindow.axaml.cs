@@ -6,6 +6,7 @@ using Lib.Drawing;
 using Lib.Drawing.Canvas;
 using Lib.Drawing.Text;
 using Lib.Helpers;
+using Lib.Modificators;
 using Point = Lib.Drawing.Common.Point;
 
 namespace App;
@@ -16,6 +17,7 @@ public partial class MainWindow : Window
     private readonly Canvas _canvas;
     private readonly TextBox _textBox;
     private bool _showBorder;
+    private bool _toDecorate;
 
     public MainWindow()
     {
@@ -26,15 +28,25 @@ public partial class MainWindow : Window
         _textBox = this.FindControl<TextBox>("TextBox")!;
 
         _showBorder = true;
+        _toDecorate = false;
+
+        InitializeMatrix();
+        UpdateCanvas();
+        UpdateText();
     }
 
     private void MatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        _matrix = new Matrix(5, 5);
-        MatrixInitiator.FillMatrix(_matrix, 20, 20);
+        InitializeMatrix();
 
         UpdateCanvas();
         UpdateText();
+    }
+
+    private void InitializeMatrix()
+    {
+        _matrix = new Matrix(5, 5);
+        MatrixInitiator.FillMatrix(_matrix, 20, 20);
     }
 
     private void SparseMatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
@@ -54,17 +66,34 @@ public partial class MainWindow : Window
             new OriginOffsetDecorator(
                 new AvaloniaCanvas(_canvas),
                 new Point(15, 15)));
-        _matrix?.Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
+        _matrix!
+            .Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
     }
 
     private void UpdateText()
     {
         IMatrixDrawer drawer = new MatrixTextDrawer(new AvaloniaTextBoxTextarea(_textBox));
-        _matrix?.Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
+        _matrix!
+            .Draw(_showBorder ? drawer : new BorderlessDrawer(drawer));
     }
 
     private void ShowBorderCheckbox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
     {
         _showBorder = !_showBorder;
+        UpdateCanvas();
+        UpdateText();
+    }
+
+    private void DecoratorCheckbox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        _toDecorate = !_toDecorate;
+
+        _matrix =
+            _toDecorate
+                ? new SwappedMatrix(_matrix!, 2, 2)
+                : _matrix!.GetComponent();
+
+        UpdateCanvas();
+        UpdateText();
     }
 }

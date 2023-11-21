@@ -1,47 +1,49 @@
+using Lib.Drawing;
 using Lib.Helpers;
 
 namespace Lib.Modificators;
 
-public class MatrixHorizontalGroup : IMatrix
+public class MatrixHorizontalGroup : ADrawableMatrix
 {
-    private readonly List<IMatrix> _matrices;
+    private readonly List<IDrawableMatrix> _matrices;
 
-    public uint RowCount => _matrices.Select(matrix => matrix.RowCount).Max();
-    public uint ColumnCount => _matrices.Select(matrix => matrix.ColumnCount).Aggregate(0u, Operators.Add);
-    public IIteratorFactory<IMatrix, double> IteratorFactory => new MatrixIteratorFactory<Iterator>();
+    public override uint RowCount => _matrices.Select(matrix => matrix.RowCount).Max();
+    public override uint ColumnCount => _matrices.Select(matrix => matrix.ColumnCount).Aggregate(0u, Operators.Add);
+    public override IDrawingStrategyCreator Creator => new DrawingStrategyCreator<DrawingStrategy>();
+    public override IDrawableMatrix GetComponent() => this;
 
-    public MatrixHorizontalGroup(List<IMatrix> matrices)
+    public MatrixHorizontalGroup(List<IDrawableMatrix> matrices)
     {
         _matrices = matrices;
     }
 
-    public double Get(uint row, uint column)
+    public override double Get(uint row, uint column)
     {
         throw new NotImplementedException();
     }
 
-    public void Set(uint row, uint column, double value)
+    public override void Set(uint row, uint column, double value)
     {
         throw new NotImplementedException();
     }
 
-    public void AddMatrix(IMatrix matrix)
+    public void AddMatrix(IDrawableMatrix matrix)
     {
         _matrices.Add(matrix);
     }
 
-    private class Iterator : IIterator<IMatrix, double>
+    private class DrawingStrategy : IDrawingStrategy
     {
-        public IMatrix Collection { get; init; }
+        public IReadOnlyMatrix Matrix { get; init; }
 
-        public double GetNext()
+        public void Draw(IMatrixDrawer drawer)
         {
-            var actualCollection = (MatrixHorizontalGroup) Collection;
-        }
+            var actualMatrix = (MatrixHorizontalGroup) Matrix;
 
-        public bool HasNext()
-        {
-            throw new NotImplementedException();
+            foreach (var matrix in actualMatrix._matrices)
+            {
+                matrix.Draw(drawer);  // TODO add смещение
+            }
         }
     }
 }

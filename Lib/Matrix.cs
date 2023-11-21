@@ -1,8 +1,10 @@
+using Lib.Drawing;
+
 namespace Lib;
 
 public class Matrix : AMatrix
 {
-    public override IIteratorFactory<IMatrix, double> IteratorFactory => new MatrixIteratorFactory<Iterator>();
+    public override IDrawingStrategyCreator Creator => new DrawingStrategyCreator<DrawingStrategy>();
 
     public Matrix(uint rowCount, uint columnCount) : base(rowCount, columnCount)
     {
@@ -10,24 +12,23 @@ public class Matrix : AMatrix
 
     protected override IVector InitializeVector(uint size) => new Vector(size);
 
-    private class Iterator : IIterator<IMatrix, double>
+    public override IDrawableMatrix GetComponent() => this;
+
+    private class DrawingStrategy : IDrawingStrategy
     {
-        public IMatrix Collection { get; init; }
-        private (int, int)? _currentElement;
+        public IReadOnlyMatrix Matrix { get; init; }
 
-        public Iterator()
+        public void Draw(IMatrixDrawer drawer)
         {
-            _currentElement = null;
-        }
+            drawer.DrawBraces(Matrix);
 
-        public double GetNext()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool HasNext()
-        {
-            throw new NotImplementedException();
+            for (var i = 0u; i < Matrix.RowCount; i++)
+            {
+                for (var j = 0u; j < Matrix.ColumnCount; j++)
+                {
+                    drawer.DrawElement(i, j, Matrix);
+                }
+            }
         }
     }
 }

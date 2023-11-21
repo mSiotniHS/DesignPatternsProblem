@@ -1,13 +1,11 @@
-using Lib.Drawing;
-
 namespace Lib;
 
-public abstract class AMatrix : IMatrix
+public abstract class AMatrix : ADrawableMatrix
 {
     private readonly IVector[] _rows;
 
-    public uint RowCount => (uint)_rows.Length;
-    public uint ColumnCount => _rows[0].Dimension;
+    public override uint RowCount => (uint)_rows.Length;
+    public override uint ColumnCount => _rows[0].Dimension;
 
 
     protected AMatrix(uint rowCount, uint columnCount)
@@ -22,11 +20,9 @@ public abstract class AMatrix : IMatrix
 
     protected abstract IVector InitializeVector(uint size);
 
-    public double Get(uint row, uint column) =>
+    public override double Get(uint row, uint column) =>
         _rows[row].Get(column);
 
-    public void Set(uint row, uint column, double value) =>
+    public override void Set(uint row, uint column, double value) =>
         _rows[row].Set(column, value);
-
-    public abstract IIteratorFactory<IMatrix, double> IteratorFactory { get; }
 }

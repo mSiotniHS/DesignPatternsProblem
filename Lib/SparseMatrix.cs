@@ -4,34 +4,33 @@ namespace Lib;
 
 public class SparseMatrix : AMatrix
 {
+    public override IDrawingStrategyCreator Creator => new DrawingStrategyCreator<DrawingStrategy>();
+
     public SparseMatrix(uint rowCount, uint columnCount) : base(rowCount, columnCount)
     {
     }
 
     protected override IVector InitializeVector(uint size) => new SparseVector(size);
-}
 
-public class SparseMatrixDrawingStrategy : IDrawingStrategy<IMatrixDrawer>
-{
-    private readonly IReadOnlyMatrix _matrix;
+    public override IDrawableMatrix GetComponent() => this;
 
-    public SparseMatrixDrawingStrategy(IReadOnlyMatrix matrix)
+    private class DrawingStrategy : IDrawingStrategy
     {
-        _matrix = matrix;
-    }
+        public IReadOnlyMatrix Matrix { get; init; }
 
-    public void Draw(IMatrixDrawer drawer)
-    {
-        drawer.DrawBraces(_matrix);
-
-        for (var i = 0u; i < _matrix.RowCount; i++)
+        public void Draw(IMatrixDrawer drawer)
         {
-            for (var j = 0u; j < _matrix.ColumnCount; j++)
+            drawer.DrawBraces(Matrix);
+
+            for (var i = 0u; i < Matrix.RowCount; i++)
             {
-                var value = _matrix.Get(i, j);
-                if (value != 0)
+                for (var j = 0u; j < Matrix.ColumnCount; j++)
                 {
-                    drawer.DrawElement(i, j, _matrix);
+                    var value = Matrix.Get(i, j);
+                    if (value != 0)
+                    {
+                        drawer.DrawElement(i, j, Matrix);
+                    }
                 }
             }
         }

@@ -1,12 +1,11 @@
 namespace Lib;
 
-public abstract class AMatrix : ADrawableMatrix
+public abstract class AMatrix : IMatrix
 {
     private readonly IVector[] _rows;
 
-    public override uint RowCount => (uint)_rows.Length;
-    public override uint ColumnCount => _rows[0].Dimension;
-
+    public uint RowCount => (uint)_rows.Length;
+    public uint ColumnCount => _rows[0].Dimension;
 
     protected AMatrix(uint rowCount, uint columnCount)
     {
@@ -20,9 +19,13 @@ public abstract class AMatrix : ADrawableMatrix
 
     protected abstract IVector InitializeVector(uint size);
 
-    public override double Get(uint row, uint column) =>
+    public double Get(uint row, uint column) =>
         _rows[row].Get(column);
 
-    public override void Set(uint row, uint column, double value) =>
+    public void Set(uint row, uint column, double value) =>
         _rows[row].Set(column, value);
+
+    public abstract void AcceptVisitor(IElementVisitor visitor);
+
+    public IMatrix GetOriginal() => this;
 }

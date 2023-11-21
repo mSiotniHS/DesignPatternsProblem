@@ -1,20 +1,24 @@
 namespace Lib.Modificators;
 
-public class TransposedMatrix : ADrawableMatrix
+public class TransposedMatrix : IMatrix
 {
-    private readonly IDrawableMatrix _matrix;
+    private readonly IMatrix _matrix;
 
-    public override uint RowCount => _matrix.ColumnCount;
-    public override uint ColumnCount => _matrix.RowCount;
-    public override IDrawingStrategyCreator Creator => _matrix.Creator;
+    public uint RowCount => _matrix.ColumnCount;
+    public uint ColumnCount => _matrix.RowCount;
 
-    public TransposedMatrix(IDrawableMatrix matrix)
+    public TransposedMatrix(IMatrix matrix)
     {
         _matrix = matrix;
     }
 
-    public override double Get(uint row, uint column) => _matrix.Get(column, row);
-    public override void Set(uint row, uint column, double value) => _matrix.Set(column, row, value);
+    public double Get(uint row, uint column) => _matrix.Get(column, row);
+    public void Set(uint row, uint column, double value) => _matrix.Set(column, row, value);
 
-    public override IDrawableMatrix GetComponent() => _matrix.GetComponent();
+    public void AcceptVisitor(IElementVisitor visitor)
+    {
+        _matrix.AcceptVisitor(new AlteringVisitor(visitor, Get));
+    }
+
+    public IMatrix GetOriginal() => _matrix;
 }

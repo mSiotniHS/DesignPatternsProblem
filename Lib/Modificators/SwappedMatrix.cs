@@ -1,16 +1,15 @@
 namespace Lib.Modificators;
 
-public class SwappedMatrix : ADrawableMatrix
+public class SwappedMatrix : IMatrix
 {
-    private readonly IDrawableMatrix _matrix;
+    private readonly IMatrix _matrix;
     private readonly uint[] _rowsPermutation;
     private readonly uint[] _columnsPermutation;
 
-    public override uint RowCount => _matrix.RowCount;
-    public override uint ColumnCount => _matrix.ColumnCount;
-    public override IDrawingStrategyCreator Creator => _matrix.Creator;
+    public uint RowCount => _matrix.RowCount;
+    public uint ColumnCount => _matrix.ColumnCount;
 
-    public SwappedMatrix(IDrawableMatrix matrix, uint swappedRowCount, uint swappedColumnCount)
+    public SwappedMatrix(IMatrix matrix, uint swappedRowCount, uint swappedColumnCount)
     {
         _matrix = matrix;
 
@@ -18,7 +17,28 @@ public class SwappedMatrix : ADrawableMatrix
         _columnsPermutation = GeneratePermutation(matrix.ColumnCount, swappedColumnCount);
     }
 
-    public override IDrawableMatrix GetComponent() => _matrix.GetComponent();
+    public double Get(uint row, uint column)
+    {
+        var actualRow = GetActualRow(row);
+        var actualColumn = GetActualColumn(column);
+
+        return _matrix.Get(actualRow, actualColumn);
+    }
+
+    public void Set(uint row, uint column, double value)
+    {
+        var actualRow = GetActualRow(row);
+        var actualColumn = GetActualColumn(column);
+
+        _matrix.Set(actualRow, actualColumn, value);
+    }
+
+    public void AcceptVisitor(IElementVisitor visitor)
+    {
+        _matrix.AcceptVisitor(new AlteringVisitor(visitor, Get));
+    }
+
+    public IMatrix GetOriginal() => _matrix;
 
     private static uint[] GeneratePermutation(uint elementCount, uint permutedElementCount) =>
         Enumerable
@@ -27,22 +47,6 @@ public class SwappedMatrix : ADrawableMatrix
             .Take((int) permutedElementCount)
             .Select(el => (uint) el)
             .ToArray();
-
-    public override double Get(uint row, uint column)
-    {
-        var actualRow = GetActualRow(row);
-        var actualColumn = GetActualColumn(column);
-
-        return _matrix.Get(actualRow, actualColumn);
-    }
-
-    public override void Set(uint row, uint column, double value)
-    {
-        var actualRow = GetActualRow(row);
-        var actualColumn = GetActualColumn(column);
-
-        _matrix.Set(actualRow, actualColumn, value);
-    }
 
     private uint GetActualRow(uint row)
     {

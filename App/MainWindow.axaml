@@ -27,11 +27,14 @@
                       IsCheckedChanged="ShowBorderCheckbox_OnIsCheckedChanged">
                 Показывать рамку
             </CheckBox>
-            <CheckBox Name="DecoratorCheckbox"
-                      IsChecked="False"
-                      IsCheckedChanged="DecoratorCheckbox_OnIsCheckedChanged">
-                Применить декоратор
-            </CheckBox>
+            <Button Name="AddDecoratorButton"
+                    Click="AddDecoratorButton_OnClick">
+                Добавить декоратор
+            </Button>
+            <Button Name="RemoveDecoratorButton"
+                    Click="RemoveDecoratorButton_OnClick">
+                Убрать декоратор
+            </Button>
         </StackPanel>
         <StackPanel
             Orientation="Horizontal"

@@ -27,9 +27,13 @@
                       IsCheckedChanged="ShowBorderCheckbox_OnIsCheckedChanged">
                 Показывать рамку
             </CheckBox>
-            <Button Name="AddDecoratorButton"
-                    Click="AddDecoratorButton_OnClick">
-                Добавить декоратор
+            <Button Name="AddSwappingDecoratorButton"
+                    Click="AddSwappingDecoratorButton_OnClick">
+                Добавить перенумерующий декоратор
+            </Button>
+            <Button Name="AddTransposeDecoratorButton"
+                    Click="AddTransposeDecoratorButton_OnClick">
+                Добавить транспонирующий декоратор
             </Button>
             <Button Name="RemoveDecoratorButton"
                     Click="RemoveDecoratorButton_OnClick">
@@ -44,13 +48,13 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     UseLayoutRounding="False"
-                    Width="400"
-                    Height="400"
+                    Width="600"
+                    Height="600"
                     />
             <TextBox Name="TextBox"
                      FontFamily="Iosevka"
-                     Width="400"
-                     Height="400"
+                     Width="600"
+                     Height="600"
                      />
         </StackPanel>
     </StackPanel>

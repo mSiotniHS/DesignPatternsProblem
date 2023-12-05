@@ -1,3 +1,5 @@
+using Lib.Visitor;
+
 namespace Lib;
 
 public class Matrix : AMatrix

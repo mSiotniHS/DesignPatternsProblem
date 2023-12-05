@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib", "Lib\Lib.csproj", "{6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{15FDF76F-0916-4D3C-925D-A93DA4E88AB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{B98C1A7D-1F68-497E-934B-BA545D5795EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{15FDF76F-0916-4D3C-925D-A93DA4E88AB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15FDF76F-0916-4D3C-925D-A93DA4E88AB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15FDF76F-0916-4D3C-925D-A93DA4E88AB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B98C1A7D-1F68-497E-934B-BA545D5795EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B98C1A7D-1F68-497E-934B-BA545D5795EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B98C1A7D-1F68-497E-934B-BA545D5795EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B98C1A7D-1F68-497E-934B-BA545D5795EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

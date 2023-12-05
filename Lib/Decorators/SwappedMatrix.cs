@@ -1,4 +1,7 @@
-namespace Lib.Modificators;
+using Lib.Visitor;
+using Lib.Visitor.Decorators;
+
+namespace Lib.Decorators;
 
 public class SwappedMatrix : IMatrix
 {
@@ -35,7 +38,7 @@ public class SwappedMatrix : IMatrix
 
     public void AcceptVisitor(IElementVisitor visitor)
     {
-        _matrix.AcceptVisitor(new AlteringVisitor(visitor, Get));
+        _matrix.AcceptVisitor(new ElementAlteringVisitor(visitor, Get));
     }
 
     public IMatrix GetOriginal() => _matrix;

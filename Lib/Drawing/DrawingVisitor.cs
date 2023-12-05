@@ -1,4 +1,6 @@
-﻿namespace Lib.Drawing;
+﻿using Lib.Visitor;
+
+namespace Lib.Drawing;
 
 public class DrawingVisitor : IElementVisitor
 {

@@ -1,4 +1,4 @@
-namespace Lib.Helpers;
+namespace Lib.Misc;
 
 public class MatrixStatistics
 {

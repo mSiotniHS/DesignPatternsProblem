@@ -1,34 +1,27 @@
+using Helpers;
+
 namespace Lib;
 
 public class SparseVector : IVector
 {
-    private readonly Dictionary<uint, double> _nonZeroValues;
+    private readonly DefaultFirstCollection<uint, double> _nonZeroValues;
 
     public SparseVector(uint dimension)
     {
-        _nonZeroValues = new Dictionary<uint, double>();
+        _nonZeroValues = new DefaultFirstCollection<uint, double>(0);
         Dimension = dimension;
     }
 
     public void Set(uint idx, double value)
     {
         AssertIndex(idx);
-
-        if (value != 0)
-        {
-            _nonZeroValues[idx] = value;
-        }
-        else if (value == 0 && _nonZeroValues.ContainsKey(idx))
-        {
-            _nonZeroValues.Remove(idx);
-        }
+        _nonZeroValues.Set(idx, value);
     }
 
     public double Get(uint idx)
     {
         AssertIndex(idx);
-
-        return _nonZeroValues.GetValueOrDefault(idx, 0);
+        return _nonZeroValues.Get(idx);
     }
 
     public uint Dimension { get; }

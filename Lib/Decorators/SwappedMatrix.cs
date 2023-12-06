@@ -36,10 +36,11 @@ public class SwappedMatrix : IMatrix
         _matrix.Set(actualRow, actualColumn, value);
     }
 
-    public void AcceptVisitor(IElementVisitor visitor)
-    {
-        _matrix.AcceptVisitor(new ElementAlteringVisitor(visitor, Get));
-    }
+    private (uint, uint) GetActualCoords(uint row, uint column) =>
+        (GetActualRow(row), GetActualColumn(column));
+
+    public void AcceptVisitor(IElementVisitor visitor) =>
+        _matrix.AcceptVisitor(new PlacementAlteringVisitor(visitor, GetActualCoords));
 
     public IMatrix GetOriginal() => _matrix;
 

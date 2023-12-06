@@ -11,6 +11,8 @@ public class DrawingVisitor : IElementVisitor
 	{
 		_drawer = drawer;
 		_matrix = matrix;
+
+		drawer.DrawBraces(matrix);
 	}
 
 	public void VisitElement(uint row, uint column, double element)

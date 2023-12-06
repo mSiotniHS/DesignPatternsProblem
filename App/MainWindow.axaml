@@ -22,6 +22,11 @@
                     HorizontalAlignment="Stretch">
                 Генерация разреженной матрицы
             </Button>
+            <Button Name="CompositeGeneratorButton"
+                    Click="CompositeGeneratorButton_OnClick"
+                    HorizontalAlignment="Stretch">
+                Генерация композита
+            </Button>
             <CheckBox Name="ShowBorderCheckbox"
                       IsChecked="True"
                       IsCheckedChanged="ShowBorderCheckbox_OnIsCheckedChanged">

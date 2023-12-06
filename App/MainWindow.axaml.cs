@@ -18,7 +18,6 @@ public partial class MainWindow : Window
     private readonly Canvas _canvas;
     private readonly TextBox _textBox;
     private bool _showBorder;
-    private bool _toDecorate;
 
     public MainWindow()
     {
@@ -31,7 +30,6 @@ public partial class MainWindow : Window
         _textBox = this.FindControl<TextBox>("TextBox")!;
 
         _showBorder = true;
-        _toDecorate = false;
 
         UpdateCanvas();
         UpdateText();
@@ -39,22 +37,8 @@ public partial class MainWindow : Window
 
     private void MatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        var matrix1 = new Matrix(3, 3);
-        var matrix2 = new SparseMatrix(4, 4);
-        var matrix3 = new Matrix(2, 2);
-
-        MatrixInitiator.FillMatrix(matrix1, 9, 10);
-        MatrixInitiator.FillMatrix(matrix2, 3, 10);
-        MatrixInitiator.FillMatrix(matrix3, 4, 10);
-
-        _matrix = new MatrixHorizontalGroup(new List<IMatrix>
-        {
-            matrix1,
-            matrix2,
-            matrix3
-        });
-
-        // MatrixInitiator.FillMatrix(_matrix, 20, 20);
+        _matrix = new Matrix(5, 5);
+        MatrixInitiator.FillMatrix(_matrix, 20, 20);
 
         UpdateCanvas();
         UpdateText();
@@ -62,8 +46,8 @@ public partial class MainWindow : Window
 
     private void SparseMatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        // _matrix = new SparseMatrix(5, 5);
-        // MatrixInitiator.FillMatrix(_matrix, 4, 20);
+        _matrix = new SparseMatrix(5, 5);
+        MatrixInitiator.FillMatrix(_matrix, 4, 20);
 
         UpdateCanvas();
         UpdateText();
@@ -114,6 +98,27 @@ public partial class MainWindow : Window
     private void AddTransposeDecoratorButton_OnClick(object? sender, RoutedEventArgs e)
     {
         _matrix = new TransposedMatrix(_matrix);
+        UpdateCanvas();
+        UpdateText();
+    }
+
+    private void CompositeGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var matrix1 = new Matrix(3, 3);
+        var matrix2 = new SparseMatrix(4, 4);
+        var matrix3 = new Matrix(2, 2);
+
+        MatrixInitiator.FillMatrix(matrix1, 7, 10);
+        MatrixInitiator.FillMatrix(matrix2, 2, 10);
+        MatrixInitiator.FillMatrix(matrix3, 4, 10);
+
+        _matrix = new MatrixHorizontalGroup(new List<IMatrix>
+        {
+            matrix1,
+            matrix2,
+            matrix3
+        });
+
         UpdateCanvas();
         UpdateText();
     }

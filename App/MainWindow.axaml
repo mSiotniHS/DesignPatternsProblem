@@ -12,37 +12,13 @@
         <StackPanel
             Orientation="Horizontal"
             HorizontalAlignment="Stretch">
-            <Button Name="MatrixGeneratorButton"
-                    Click="MatrixGeneratorButton_OnClick"
-                    HorizontalAlignment="Stretch">
-                Генерация обычной матрицы
+            <Button Name="ChangeMatrixButton"
+                    Click="ChangeMatrixButton_OnClick">
+                Изменить
             </Button>
-            <Button Name="SparseMatrixGeneratorButton"
-                    Click="SparseMatrixGeneratorButton_OnClick"
-                    HorizontalAlignment="Stretch">
-                Генерация разреженной матрицы
-            </Button>
-            <Button Name="CompositeGeneratorButton"
-                    Click="CompositeGeneratorButton_OnClick"
-                    HorizontalAlignment="Stretch">
-                Генерация композита
-            </Button>
-            <CheckBox Name="ShowBorderCheckbox"
-                      IsChecked="True"
-                      IsCheckedChanged="ShowBorderCheckbox_OnIsCheckedChanged">
-                Показывать рамку
-            </CheckBox>
-            <Button Name="AddSwappingDecoratorButton"
-                    Click="AddSwappingDecoratorButton_OnClick">
-                Добавить перенумерующий декоратор
-            </Button>
-            <Button Name="AddTransposeDecoratorButton"
-                    Click="AddTransposeDecoratorButton_OnClick">
-                Добавить транспонирующий декоратор
-            </Button>
-            <Button Name="RemoveDecoratorButton"
-                    Click="RemoveDecoratorButton_OnClick">
-                Убрать декоратор
+            <Button Name="UndoButton"
+                    Click="UndoButton_OnClick">
+                Отменить
             </Button>
         </StackPanel>
         <StackPanel
@@ -53,13 +29,13 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     UseLayoutRounding="False"
-                    Width="600"
-                    Height="600"
+                    Width="400"
+                    Height="400"
                     />
             <TextBox Name="TextBox"
                      FontFamily="Iosevka"
-                     Width="600"
-                     Height="600"
+                     Width="400"
+                     Height="400"
                      />
         </StackPanel>
     </StackPanel>

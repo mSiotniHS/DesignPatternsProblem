@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using System;
+using App.CommandFramework;
 using App.Helpers;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Lib;
-using Lib.Decorators;
 using Lib.Drawing;
 using Lib.Drawing.Canvas;
 using Lib.Drawing.Text;
@@ -14,41 +14,28 @@ namespace App;
 
 public partial class MainWindow : Window
 {
-    private IMatrix _matrix;
+    private IMatrix? _matrix;
+    private readonly IMatrix _initial;
     private readonly Canvas _canvas;
     private readonly TextBox _textBox;
-    private bool _showBorder;
 
     public MainWindow()
     {
         InitializeComponent();
 
-        _matrix = new Matrix(5, 5);
-        MatrixInitiator.FillMatrix(_matrix, 20, 20);
-
         _canvas = this.FindControl<Canvas>("Canvas")!;
         _textBox = this.FindControl<TextBox>("TextBox")!;
 
-        _showBorder = true;
+        _initial = new Matrix(5, 6);
+        MatrixInitiator.FillMatrix(_initial, 25, 20);
 
-        UpdateCanvas();
-        UpdateText();
+        new InitializeAppStateCommand(this, _initial).Execute();
+
+        Update();
     }
 
-    private void MatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
+    private void Update()
     {
-        _matrix = new Matrix(5, 5);
-        MatrixInitiator.FillMatrix(_matrix, 20, 20);
-
-        UpdateCanvas();
-        UpdateText();
-    }
-
-    private void SparseMatrixGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        _matrix = new SparseMatrix(5, 5);
-        MatrixInitiator.FillMatrix(_matrix, 4, 20);
-
         UpdateCanvas();
         UpdateText();
     }
@@ -62,7 +49,7 @@ public partial class MainWindow : Window
                 new AvaloniaCanvas(_canvas),
                 new Point(15, 15)));
 
-        var visitor = new DrawingVisitor(_showBorder ? drawer : new BorderlessDrawer(drawer), _matrix);
+        var visitor = new DrawingVisitor(drawer, _matrix);
         _matrix.AcceptVisitor(visitor);
     }
 
@@ -70,56 +57,78 @@ public partial class MainWindow : Window
     {
         IMatrixDrawer drawer = new MatrixTextDrawer(new AvaloniaTextBoxTextarea(_textBox));
 
-        var visitor = new DrawingVisitor(_showBorder ? drawer : new BorderlessDrawer(drawer), _matrix);
-        _matrix.AcceptVisitor(visitor);
+        var visitor = new DrawingVisitor(drawer, _initial);
+        _initial.AcceptVisitor(visitor);
     }
 
-    private void ShowBorderCheckbox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    private void ChangeMatrixButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        _showBorder = !_showBorder;
-        UpdateCanvas();
-        UpdateText();
+        var row = (uint) Random.Shared.Next(0, (int) _matrix.RowCount);
+        var column = (uint) Random.Shared.Next(0, (int) _matrix.ColumnCount);
+        var value = 20 * (Random.Shared.NextDouble() - 0.5);
+
+        new ChangeMatrixCommand(_matrix, row, column, value).Execute();
+
+        Update();
     }
 
-    private void RemoveDecoratorButton_OnClick(object? sender, RoutedEventArgs e)
+    private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        _matrix = _matrix.GetOriginal();
-        UpdateCanvas();
-        UpdateText();
+        CommandManager.Instance.Undo();
+        Update();
     }
 
-    private void AddSwappingDecoratorButton_OnClick(object? sender, RoutedEventArgs e)
+    #region Commands
+
+    private class InitializeAppStateCommand : ACommand
     {
-        _matrix = new SwappedMatrix(_matrix, 0, 2);
-        UpdateCanvas();
-        UpdateText();
-    }
+        private readonly MainWindow _window;
+        private readonly IMatrix _matrix;
 
-    private void AddTransposeDecoratorButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        _matrix = new TransposedMatrix(_matrix);
-        UpdateCanvas();
-        UpdateText();
-    }
-
-    private void CompositeGeneratorButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        var matrix1 = new Matrix(3, 3);
-        var matrix2 = new SparseMatrix(4, 4);
-        var matrix3 = new Matrix(2, 2);
-
-        MatrixInitiator.FillMatrix(matrix1, 7, 10);
-        MatrixInitiator.FillMatrix(matrix2, 2, 10);
-        MatrixInitiator.FillMatrix(matrix3, 4, 10);
-
-        _matrix = new MatrixHorizontalGroup(new List<IMatrix>
+        public InitializeAppStateCommand(MainWindow window, IMatrix matrix)
         {
-            matrix1,
-            matrix2,
-            matrix3
-        });
+            _window = window;
+            _matrix = matrix;
+        }
 
-        UpdateCanvas();
-        UpdateText();
+        protected override void DoExecute()
+        {
+            if (_window._matrix is null)
+            {
+                _window._matrix = _matrix.Clone();
+                return;
+            }
+
+            for (var i = 0u; i < _window._matrix.RowCount; i++)
+            {
+                for (var j = 0u; j < _window._matrix.ColumnCount; j++)
+                {
+                    _window._matrix.Set(i, j, _matrix.Get(i, j));
+                }
+            }
+        }
     }
+
+    private class ChangeMatrixCommand : ACommand
+    {
+        private readonly IMatrix _matrix;
+        private readonly uint _row;
+        private readonly uint _column;
+        private readonly double _value;
+
+        public ChangeMatrixCommand(IMatrix matrix, uint row, uint column, double value)
+        {
+            _matrix = matrix;
+            _row = row;
+            _column = column;
+            _value = value;
+        }
+
+        protected override void DoExecute()
+        {
+            _matrix.Set(_row, _column, _value);
+        }
+    }
+
+    #endregion
 }

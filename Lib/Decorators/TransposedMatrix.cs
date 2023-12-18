@@ -34,4 +34,10 @@ public class TransposedMatrix : IMatrix
         (column, row);
 
     public IMatrix GetOriginal() => _matrix;
+
+    public IMatrix Clone()
+    {
+        var innerClone = _matrix.Clone();
+        return new TransposedMatrix(innerClone);
+    }
 }

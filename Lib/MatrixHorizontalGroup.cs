@@ -7,7 +7,7 @@ namespace Lib;
 public class MatrixHorizontalGroup : IMatrix
 {
     private readonly List<IMatrix> _matrices;
-    private readonly DefaultFirstCollection<(uint, uint), double> _emptySpace;
+    private DefaultFirstCollection<(uint, uint), double> _emptySpace;
 
     public uint RowCount => _matrices.Select(matrix => matrix.RowCount).Max();
     public uint ColumnCount => _matrices.Select(matrix => matrix.ColumnCount).Aggregate(0u, Operators.Add);
@@ -103,5 +103,15 @@ public class MatrixHorizontalGroup : IMatrix
     public void AddMatrix(IMatrix matrix)
     {
         _matrices.Add(matrix);
+    }
+
+    public IMatrix Clone()
+    {
+        var clone = new MatrixHorizontalGroup(_matrices.Select(matrix => matrix.Clone()).ToList())
+        {
+            _emptySpace = _emptySpace.Clone()
+        };
+
+        return clone;
     }
 }

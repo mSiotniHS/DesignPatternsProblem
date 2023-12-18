@@ -73,4 +73,18 @@ public class SwappedMatrix : IMatrix
 
         return elIdx == _columnsPermutation.Length - 1 ? _columnsPermutation[0] : _columnsPermutation[elIdx + 1];
     }
+
+    public IMatrix Clone()
+    {
+        var innerClone = _matrix.Clone();
+        var decorator = new SwappedMatrix(
+            innerClone,
+            0,
+            0);
+
+        Array.Copy(_rowsPermutation, decorator._rowsPermutation, _rowsPermutation.Length);
+        Array.Copy(_columnsPermutation, decorator._columnsPermutation, _columnsPermutation.Length);
+
+        return decorator;
+    }
 }

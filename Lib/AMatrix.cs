@@ -30,4 +30,6 @@ public abstract class AMatrix : IMatrix
     public abstract void AcceptVisitor(IElementVisitor visitor);
 
     public IMatrix GetOriginal() => this;
+
+    public abstract IMatrix Clone();
 }

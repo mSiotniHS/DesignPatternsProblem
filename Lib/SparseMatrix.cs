@@ -20,4 +20,18 @@ public class SparseMatrix : AMatrix
             }
         }
     }
+
+    public override IMatrix Clone()
+    {
+        var clone = new Matrix(RowCount, ColumnCount);
+        for (var i = 0u; i < RowCount; i++)
+        {
+            for (var j = 0u; j < ColumnCount; j++)
+            {
+                clone.Set(i, j, Get(i, j));
+            }
+        }
+
+        return clone;
+    }
 }

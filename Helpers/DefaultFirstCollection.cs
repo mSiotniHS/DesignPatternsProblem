@@ -1,6 +1,6 @@
 ﻿namespace Helpers;
 
-public class DefaultFirstCollection<TKey, TValue>
+public class DefaultFirstCollection<TKey, TValue> : ICloneable<DefaultFirstCollection<TKey, TValue>>
 	where TKey : notnull
 	where TValue : IEquatable<TValue>
 {
@@ -26,5 +26,16 @@ public class DefaultFirstCollection<TKey, TValue>
 		{
 			_nonDefaultValues.Remove(key);
 		}
+	}
+
+	public DefaultFirstCollection<TKey, TValue> Clone()
+	{
+		var clone = new DefaultFirstCollection<TKey, TValue>(_defaultValue);
+		foreach (var (key, value) in _nonDefaultValues)
+		{
+			clone.Set(key, value);
+		}
+
+		return clone;
 	}
 }
